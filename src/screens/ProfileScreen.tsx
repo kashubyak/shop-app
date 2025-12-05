@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
-import { loginUser, registerUser } from '../api/auth'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { Typography } from '../components/ui/Typography'
+import { loginUser, registerUser } from '../service/auth'
 import { useAuthStore } from '../store/useAuthStore'
 import { RootTabScreenProps } from '../types/navigation'
 

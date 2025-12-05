@@ -1,4 +1,4 @@
-import { loginUser, registerUser } from '@/api/auth'
+import { loginUser, registerUser } from '@/service/auth'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useState } from 'react'
 import { Alert } from 'react-native'
