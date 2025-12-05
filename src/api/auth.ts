@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { IUserData } from '../types/user'
 
 const API_URL = 'https://fakestoreapi.com'
 
@@ -10,7 +11,7 @@ export const loginUser = async (username: string, password: string) => {
 	return data
 }
 
-export const registerUser = async (userData: any) => {
+export const registerUser = async (userData: IUserData) => {
 	const { data } = await axios.post(`${API_URL}/users`, userData)
 	return data
 }

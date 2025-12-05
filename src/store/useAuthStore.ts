@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
+import { IUser } from '../types/user'
 
 interface AuthState {
 	token: string | null
-	user: any | null
+	user: IUser | null
 	isLoading: boolean
 	login: (token: string) => Promise<void>
 	logout: () => Promise<void>
@@ -28,9 +29,7 @@ export const useAuthStore = create<AuthState>(set => ({
 	checkAuth: async () => {
 		try {
 			const token = await AsyncStorage.getItem('user_token')
-			if (token) {
-				set({ token })
-			}
+			if (token) set({ token })
 		} catch (e) {
 			console.error('Failed to load token')
 		} finally {
