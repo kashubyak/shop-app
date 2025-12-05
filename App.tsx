@@ -2,11 +2,13 @@ import { Ionicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
+import { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
 import './global.css'
 import { CartScreen } from './src/screens/CartScreen'
 import { HomeScreen } from './src/screens/HomeScreen'
 import { ProfileScreen } from './src/screens/ProfileScreen'
+import { useAuthStore } from './src/store/useAuthStore'
 import { AppDarkTheme, AppLightTheme } from './src/theme'
 import { RootTabParamList } from './src/types/navigation'
 
@@ -14,8 +16,13 @@ const Tab = createBottomTabNavigator<RootTabParamList>()
 
 export default function App() {
 	const colorScheme = useColorScheme()
-
 	const theme = colorScheme === 'dark' ? AppDarkTheme : AppLightTheme
+
+	const checkAuth = useAuthStore(state => state.checkAuth)
+
+	useEffect(() => {
+		checkAuth()
+	}, [])
 
 	return (
 		<NavigationContainer theme={theme}>
