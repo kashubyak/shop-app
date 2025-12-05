@@ -73,7 +73,7 @@ export const AuthForm = ({
 
 				<Input
 					label='Password'
-					placeholder='******'
+					placeholder='83r5^_'
 					secureTextEntry
 					value={values.password}
 					onChangeText={setters.setPassword}
