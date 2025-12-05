@@ -16,8 +16,8 @@ export const ProfileScreen = ({ route }: Props) => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [email, setEmail] = useState('')
-	const [firstname, setFirstname] = useState('')
-	const [lastname, setLastname] = useState('')
+	const [firstName, setFirstName] = useState('')
+	const [lastName, setLastName] = useState('')
 
 	const { token, login, logout } = useAuthStore()
 
@@ -27,7 +27,7 @@ export const ProfileScreen = ({ route }: Props) => {
 			return
 		}
 
-		if (!isLoginMode && (!email || !firstname || !lastname)) {
+		if (!isLoginMode && (!email || !firstName || !lastName)) {
 			Alert.alert('Error', 'Please fill in all fields')
 			return
 		}
@@ -43,7 +43,7 @@ export const ProfileScreen = ({ route }: Props) => {
 					email: email,
 					username: username,
 					password: password,
-					name: { firstname: firstname, lastname: lastname },
+					name: { firstName: firstName, lastName: lastName },
 					address: {
 						city: 'Kyiv',
 						street: 'Khreschatyk',
@@ -110,16 +110,16 @@ export const ProfileScreen = ({ route }: Props) => {
 								<Input
 									label='First Name'
 									placeholder='John'
-									value={firstname}
-									onChangeText={setFirstname}
+									value={firstName}
+									onChangeText={setFirstName}
 								/>
 							</View>
 							<View className='flex-1'>
 								<Input
 									label='Last Name'
 									placeholder='Doe'
-									value={lastname}
-									onChangeText={setLastname}
+									value={lastName}
+									onChangeText={setLastName}
 								/>
 							</View>
 						</View>
