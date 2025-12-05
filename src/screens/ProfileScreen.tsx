@@ -145,7 +145,7 @@ export const ProfileScreen = ({ route }: Props) => {
 
 				<Input
 					label='Password'
-					placeholder='******'
+					placeholder='83r5^_'
 					secureTextEntry
 					value={password}
 					onChangeText={setPassword}
