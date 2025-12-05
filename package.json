@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.8.11",
     "@react-navigation/native": "^7.1.24",
+    "babel-preset-expo": "~54.0.0",
     "expo": "~54.0.26",
     "expo-status-bar": "~3.0.8",
     "nativewind": "^4.2.1",
