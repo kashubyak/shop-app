@@ -31,7 +31,7 @@ export const ProductGrid = ({ products, isLoading, error }: ProductGridProps) =>
 			data={products}
 			keyExtractor={item => item.id.toString()}
 			numColumns={2}
-			columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
+			columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 10 }}
 			contentContainerStyle={{ paddingBottom: 20 }}
 			renderItem={({ item }) => (
 				<ProductCard product={item} onPress={id => console.log('Open product', id)} />

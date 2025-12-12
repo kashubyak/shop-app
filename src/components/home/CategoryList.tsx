@@ -20,7 +20,7 @@ export const CategoryList = ({
 				data={data}
 				horizontal
 				showsHorizontalScrollIndicator={false}
-				contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
+				contentContainerStyle={{ paddingHorizontal: 10, gap: 8 }}
 				keyExtractor={item => item}
 				renderItem={({ item }) => {
 					const isActive = activeCategory === item

@@ -9,7 +9,7 @@ interface ProductCardProps {
 export const ProductCard = ({ product, onPress }: ProductCardProps) => {
 	return (
 		<TouchableOpacity
-			className='bg-card rounded-xl shadow-sm border border-border p-3 mb-4 w-[48%]'
+			className='bg-card rounded-xl shadow-sm border border-border p-2 mb-4 w-[48%]'
 			onPress={() => onPress?.(product.id)}
 			activeOpacity={0.7}
 		>
