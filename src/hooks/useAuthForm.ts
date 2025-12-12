@@ -1,5 +1,6 @@
 import { loginUser, registerUser } from '@/service/auth'
 import { useAuthStore } from '@/store/useAuthStore'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 
@@ -54,8 +55,10 @@ export const useAuthForm = () => {
 				Alert.alert('Success', 'Account created! Please log in.')
 				setIsLoginMode(true)
 			}
-		} catch (error: any) {
-			Alert.alert('Error', error.response?.data || 'Something went wrong')
+		} catch (error: unknown) {
+			if (error instanceof AxiosError)
+				Alert.alert('Error', (error.response?.data as string) || 'Something went wrong')
+			else Alert.alert('Error', 'Something went wrong')
 		} finally {
 			setLoading(false)
 		}
