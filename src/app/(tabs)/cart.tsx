@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/Button'
 import { Typography } from '@/components/ui/Typography'
+import { CheckoutModal } from '@/components/checkout/CheckoutModal'
+import { SuccessModal } from '@/components/checkout/SuccessModal'
+import { CheckoutFormData } from '@/components/checkout/CheckoutForm'
 import { useCartStore } from '@/store/useCartStore'
 import { Ionicons } from '@expo/vector-icons'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	ActivityIndicator,
 	FlatList,
@@ -13,12 +16,41 @@ import {
 } from 'react-native'
 
 export default function CartScreen() {
-	const { items, totalPrice, totalItems, isLoading, loadCart, updateQuantity, removeItem } =
+	const { items, totalPrice, totalItems, isLoading, loadCart, updateQuantity, removeItem, clearCart } =
 		useCartStore()
+	const [isCheckoutModalVisible, setIsCheckoutModalVisible] = useState(false)
+	const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	useEffect(() => {
 		loadCart()
 	}, [])
+
+	const handleCheckout = () => {
+		setIsCheckoutModalVisible(true)
+	}
+
+	/**
+	 * Handles checkout form submission
+	 * Simulates API call, clears cart, and shows success message
+	 */
+	const handleCheckoutSubmit = async (data: CheckoutFormData) => {
+		setIsSubmitting(true)
+		
+		// Simulate API call to submit order
+		await new Promise(resolve => setTimeout(resolve, 1500))
+		
+		// Clear cart after successful order submission
+		await clearCart()
+		
+		setIsSubmitting(false)
+		setIsCheckoutModalVisible(false)
+		setIsSuccessModalVisible(true)
+	}
+
+	const handleSuccessClose = () => {
+		setIsSuccessModalVisible(false)
+	}
 
 	if (isLoading) {
 		return (
@@ -115,7 +147,7 @@ export default function CartScreen() {
 				</View>
 
 				{/* Total Price Section */}
-				<View className='px-4 mt-4 mb-6'>
+				<View className='px-4 mt-4 mb-4'>
 					<View className='bg-card rounded-xl p-4 border border-border'>
 						<View className='flex-row justify-between items-center mb-2'>
 							<Typography variant='body' className='text-muted-foreground'>
@@ -136,7 +168,28 @@ export default function CartScreen() {
 						</View>
 					</View>
 				</View>
+
+				{/* Checkout Button */}
+				<View className='px-4 mb-6'>
+					<Button
+						title='Checkout'
+						variant='primary'
+						onPress={handleCheckout}
+						className='w-full'
+					/>
+				</View>
 			</ScrollView>
+
+			{/* Checkout Modal */}
+			<CheckoutModal
+				visible={isCheckoutModalVisible}
+				onClose={() => setIsCheckoutModalVisible(false)}
+				onSubmit={handleCheckoutSubmit}
+				isLoading={isSubmitting}
+			/>
+
+			{/* Success Modal */}
+			<SuccessModal visible={isSuccessModalVisible} onClose={handleSuccessClose} />
 		</View>
 	)
 }
