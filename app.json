@@ -18,7 +18,9 @@
       "bundleIdentifier": "com.anonymous.shopapp",
       "infoPlist": {
         "NSCameraUsageDescription": "This app needs access to your camera to take photos of products.",
-        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to select product images."
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to select product images.",
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to set your delivery address.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs access to your location to set your delivery address."
       }
     },
     "android": {
@@ -32,7 +34,9 @@
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
       ]
     },
     "web": {
@@ -45,6 +49,12 @@
         {
           "photosPermission": "This app needs access to your photos to upload product images.",
           "cameraPermission": "This app needs access to your camera to take photos of products."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "This app needs access to your location to set your delivery address."
         }
       ]
     ]
