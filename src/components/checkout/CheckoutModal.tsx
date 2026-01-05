@@ -1,7 +1,6 @@
 import { CheckoutForm, CheckoutFormData } from './CheckoutForm'
 import { Ionicons } from '@expo/vector-icons'
-import { Modal, TouchableOpacity, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Modal, TouchableOpacity, View, useColorScheme } from 'react-native'
 
 interface CheckoutModalProps {
 	visible: boolean
@@ -16,7 +15,8 @@ export const CheckoutModal = ({
 	onSubmit,
 	isLoading = false,
 }: CheckoutModalProps) => {
-	const insets = useSafeAreaInsets()
+	const colorScheme = useColorScheme()
+	const iconColor = colorScheme === 'dark' ? '#ffffff' : '#1f2937'
 
 	return (
 		<Modal
@@ -25,16 +25,21 @@ export const CheckoutModal = ({
 			presentationStyle='pageSheet'
 			onRequestClose={onClose}
 		>
-			<View className='flex-1 bg-background' style={{ paddingTop: insets.top }}>
+			<View className='flex-1 bg-background'>
+				{/* Drag Handle Indicator */}
+				<View className='pt-2 pb-1 items-center'>
+					<View className='w-12 h-1 bg-muted-foreground/30 rounded-full' />
+				</View>
+
 				{/* Header with close button */}
 				<View className='flex-row items-center justify-between px-4 py-3 border-b border-border'>
 					<TouchableOpacity
 						onPress={onClose}
-						className='w-10 h-10 items-center justify-center'
+						className='w-10 h-10 items-center justify-center rounded-full bg-muted active:bg-muted/80'
 						activeOpacity={0.7}
 						disabled={isLoading}
 					>
-						<Ionicons name='close' size={24} color='#1f2937' />
+						<Ionicons name='close' size={22} color={iconColor} />
 					</TouchableOpacity>
 				</View>
 
