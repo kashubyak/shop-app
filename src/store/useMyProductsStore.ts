@@ -36,7 +36,7 @@ export const useMyProductsStore = create<MyProductsState>((set, get) => ({
 		try {
 			await AsyncStorage.setItem(MY_PRODUCTS_STORAGE_KEY, JSON.stringify(newProducts))
 		} catch (error) {
-			console.error('Failed to save my products to storage:', error)
+			// Failed to save products
 		}
 
 		set({ products: newProducts })
@@ -49,7 +49,7 @@ export const useMyProductsStore = create<MyProductsState>((set, get) => ({
 		try {
 			await AsyncStorage.setItem(MY_PRODUCTS_STORAGE_KEY, JSON.stringify(newProducts))
 		} catch (error) {
-			console.error('Failed to delete product from storage:', error)
+			// Failed to delete product
 		}
 
 		set({ products: newProducts })
@@ -65,7 +65,6 @@ export const useMyProductsStore = create<MyProductsState>((set, get) => ({
 				set({ isLoading: false })
 			}
 		} catch (error) {
-			console.error('Failed to load my products from storage:', error)
 			set({ isLoading: false })
 		}
 	},

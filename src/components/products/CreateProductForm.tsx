@@ -72,7 +72,6 @@ export const CreateProductForm = ({ onSuccess }: CreateProductFormProps) => {
 
 			onSuccess?.()
 		} catch (error) {
-			console.error('Error creating product:', error)
 			Alert.alert('Error', 'Failed to create product')
 		} finally {
 			setIsSubmitting(false)

@@ -27,7 +27,6 @@ export const useLocation = () => {
 			}
 			return true
 		} catch (err) {
-			console.error('Error requesting location permission:', err)
 			return false
 		}
 	}
@@ -67,13 +66,6 @@ export const useLocation = () => {
 			})
 
 			const { latitude, longitude, accuracy } = currentLocation.coords
-			
-			// Log location data for debugging
-			console.log('Location obtained:', {
-				latitude,
-				longitude,
-				accuracy: accuracy ? `${accuracy.toFixed(2)}m` : 'unknown',
-			})
 
 			// Reverse geocoding to get address
 			let address: string | undefined
@@ -96,7 +88,6 @@ export const useLocation = () => {
 						.join(', ')
 				}
 			} catch (geocodeError) {
-				console.error('Error reverse geocoding:', geocodeError)
 				// Continue without address if reverse geocoding fails
 			}
 

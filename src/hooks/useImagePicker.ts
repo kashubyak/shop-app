@@ -40,7 +40,6 @@ export const useImagePicker = () => {
 				return result.assets[0].uri
 			}
 		} catch (error) {
-			console.error('Error picking image from gallery:', error)
 			Alert.alert('Error', 'Failed to load image from gallery')
 		} finally {
 			setIsLoading(false)
@@ -65,7 +64,6 @@ export const useImagePicker = () => {
 				return result.assets[0].uri
 			}
 		} catch (error) {
-			console.error('Error taking photo:', error)
 			Alert.alert('Error', 'Failed to take photo')
 		} finally {
 			setIsLoading(false)
