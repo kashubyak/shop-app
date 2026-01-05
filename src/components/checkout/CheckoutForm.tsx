@@ -43,8 +43,8 @@ export const CheckoutForm = ({ onSubmit, onCancel, isLoading = false }: Checkout
 
 	return (
 		<View className='flex-1 bg-background'>
-			<View className='px-6 pt-4 pb-4'>
-				<Typography variant='body' className='text-muted-foreground mb-6'>
+			<View className='px-6 pt-6 pb-6'>
+				<Typography variant='body' className='text-muted-foreground mb-6 text-center'>
 					Please fill in your details to complete the order
 				</Typography>
 
