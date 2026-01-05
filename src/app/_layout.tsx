@@ -6,6 +6,7 @@ import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import '../../global.css'
 
 const queryClient = new QueryClient()
@@ -20,13 +21,15 @@ export default function RootLayout() {
 	}, [])
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<ThemeProvider value={theme}>
-				<Stack>
-					<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-				</Stack>
-				<StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-			</ThemeProvider>
-		</QueryClientProvider>
+		<SafeAreaProvider>
+			<QueryClientProvider client={queryClient}>
+				<ThemeProvider value={theme}>
+					<Stack>
+						<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+					</Stack>
+					<StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+				</ThemeProvider>
+			</QueryClientProvider>
+		</SafeAreaProvider>
 	)
 }
