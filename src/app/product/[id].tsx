@@ -14,6 +14,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	View,
+	Alert,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Animated, {
@@ -22,6 +23,7 @@ import Animated, {
 	withSpring,
 	withTiming,
 } from 'react-native-reanimated'
+import { shareProduct } from '@/utils/shareProduct'
 
 export default function ProductDetailsScreen() {
 	const { id } = useLocalSearchParams<{ id: string }>()
@@ -70,6 +72,16 @@ export default function ProductDetailsScreen() {
 		setIsAddingToCart(false)
 	}
 
+	const handleShare = async () => {
+		if (!product) return
+
+		try {
+			await shareProduct(product.id, product.title)
+		} catch (error) {
+			Alert.alert('Error', 'Failed to share product')
+		}
+	}
+
 	if (isLoading) {
 		return (
 			<View className='flex-1 justify-center items-center bg-background'>
@@ -95,7 +107,7 @@ export default function ProductDetailsScreen() {
 				className='flex-1 bg-background'
 				showsVerticalScrollIndicator={false}
 			>
-				{/* Header with back button */}
+				{/* Header with back button and share */}
 				<View className='flex-row items-center justify-between px-4 pt-2 pb-4'>
 					<TouchableOpacity
 						onPress={() => router.back()}
@@ -103,6 +115,13 @@ export default function ProductDetailsScreen() {
 						activeOpacity={0.8}
 					>
 						<Ionicons name='arrow-back' size={22} color='#1f2937' />
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={handleShare}
+						className='w-12 h-12 rounded-full items-center justify-center bg-white shadow-md border border-gray-100'
+						activeOpacity={0.8}
+					>
+						<Ionicons name='share-outline' size={22} color='#1f2937' />
 					</TouchableOpacity>
 				</View>
 
