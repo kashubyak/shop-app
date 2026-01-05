@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/Button'
 import { Rating } from '@/components/ui/Rating'
 import { Typography } from '@/components/ui/Typography'
 import { useProducts } from '@/hooks/useProducts'
+import { useCartStore } from '@/store/useCartStore'
 import { IProduct } from '@/types/products.interface'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams, useRouter } from 'expo-router'
@@ -29,6 +30,7 @@ export default function ProductDetailsScreen() {
 
 	const { data: products = [], isLoading } = useProducts('all')
 	const product = products.find((p: IProduct) => p.id === productId)
+	const addItem = useCartStore(state => state.addItem)
 
 	const [isAddingToCart, setIsAddingToCart] = useState(false)
 	const scale = useSharedValue(1)
@@ -42,15 +44,15 @@ export default function ProductDetailsScreen() {
 	})
 
 	const handleAddToCart = async () => {
-		if (isAddingToCart) return
+		if (isAddingToCart || !product) return
 
 		setIsAddingToCart(true)
 		// Press animation - scale down and reduce opacity
 		scale.value = withSpring(0.92, { damping: 15, stiffness: 300 })
 		opacity.value = withTiming(0.8, { duration: 150 })
 
-		// Simulate adding to cart
-		await new Promise(resolve => setTimeout(resolve, 600))
+		// Add product to cart
+		await addItem(product)
 
 		// Return to normal state
 		scale.value = withSpring(1, { damping: 15, stiffness: 300 })
