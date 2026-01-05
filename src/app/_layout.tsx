@@ -26,14 +26,6 @@ export default function RootLayout() {
 				<ThemeProvider value={theme}>
 					<Stack>
 						<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-						<Stack.Screen
-							name='product/[id]'
-							options={{
-								headerShown: false,
-								presentation: 'card',
-								animation: 'slide_from_right',
-							}}
-						/>
 					</Stack>
 					<StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 				</ThemeProvider>

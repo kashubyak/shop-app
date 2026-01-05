@@ -21,7 +21,7 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated'
 
-export default function ProductDetailsScreen() {
+function ProductDetailsScreen() {
 	const { id } = useLocalSearchParams<{ id: string }>()
 	const router = useRouter()
 	const productId = parseInt(id || '0', 10)
@@ -78,71 +78,94 @@ export default function ProductDetailsScreen() {
 
 	return (
 		<SafeAreaView className='flex-1 bg-background' edges={['top']}>
-			<ScrollView className='flex-1 bg-background'>
+			<ScrollView 
+				className='flex-1 bg-background'
+				showsVerticalScrollIndicator={false}
+			>
 				{/* Header with back button */}
-				<View className='flex-row items-center justify-between p-4'>
+				<View className='flex-row items-center justify-between px-4 pt-2 pb-4'>
 					<TouchableOpacity
 						onPress={() => router.back()}
-						className='w-10 h-10 rounded-full items-center justify-center bg-card border border-border'
-						activeOpacity={0.7}
+						className='w-12 h-12 rounded-full items-center justify-center bg-white shadow-md border border-gray-100'
+						activeOpacity={0.8}
 					>
-						<Ionicons name='arrow-back' size={20} color='#000' />
+						<Ionicons name='arrow-back' size={22} color='#1f2937' />
 					</TouchableOpacity>
 				</View>
 
-				{/* Large product image */}
-				<View className='w-full h-80 bg-white items-center justify-center mb-4'>
-					<Image
-						source={{ uri: product.image }}
-						className='w-full h-full'
-						resizeMode='contain'
-					/>
+				{/* Large product image with shadow */}
+				<View className='w-full h-96 bg-white items-center justify-center mb-6 px-4'>
+					<View className='w-full h-full rounded-2xl bg-white shadow-lg overflow-hidden'>
+						<Image
+							source={{ uri: product.image }}
+							className='w-full h-full'
+							resizeMode='contain'
+						/>
+					</View>
 				</View>
 
 				{/* Content */}
-				<View className='px-4 pb-8'>
-					{/* Category */}
-					<Typography variant='body' className='text-muted-foreground capitalize mb-2'>
-						{product.category}
-					</Typography>
+				<View className='px-6 pb-8'>
+					{/* Category badge */}
+					<View className='mb-3'>
+						<View className='self-start px-3 py-1.5 bg-primary/10 rounded-full'>
+							<Typography variant='body' className='text-primary font-semibold text-xs uppercase tracking-wide'>
+								{product.category}
+							</Typography>
+						</View>
+					</View>
 
 					{/* Title */}
-					<Typography variant='h1' className='mb-3'>
+					<Typography variant='h1' className='mb-4 text-2xl font-bold leading-tight'>
 						{product.title}
 					</Typography>
 
-					{/* Rating */}
-					<View className='mb-4 flex-row items-center gap-2'>
-						<Rating rating={product.rating.rate} size={24} />
-						<Typography variant='body' className='text-muted-foreground'>
-							({product.rating.count} reviews)
+					{/* Rating and reviews */}
+					<View className='mb-6 flex-row items-center gap-3'>
+						<Rating rating={product.rating.rate} size={20} />
+						<Typography variant='body' className='text-muted-foreground text-sm'>
+							{product.rating.rate.toFixed(1)} • {product.rating.count} reviews
 						</Typography>
 					</View>
 
 					{/* Price */}
-					<Typography variant='h1' className='text-primary mb-6'>
-						${product.price}
-					</Typography>
+					<View className='mb-6'>
+						<Typography variant='h1' className='text-primary text-3xl font-bold'>
+							${product.price.toFixed(2)}
+						</Typography>
+					</View>
+
+					{/* Divider */}
+					<View className='h-px bg-border mb-6' />
 
 					{/* Description */}
-					<Typography variant='body' className='text-foreground mb-8 leading-6'>
-						{product.description}
-					</Typography>
+					<View className='mb-8'>
+						<Typography variant='body' className='text-foreground text-base leading-7'>
+							{product.description}
+						</Typography>
+					</View>
 
 					{/* Add to cart button with animation */}
 					<Animated.View style={animatedButtonStyle}>
-					<Button
-						title={isAddingToCart ? 'Adding...' : 'Add to Cart'}
-						variant='primary'
-						isLoading={isAddingToCart}
-						onPress={handleAddToCart}
-						className='w-full'
-						style={{ opacity: 1 }}
-					/>
-				</Animated.View>
-			</View>
+						<Button
+							title={isAddingToCart ? 'Adding to Cart...' : 'Add to Cart'}
+							variant='primary'
+							isLoading={isAddingToCart}
+							onPress={handleAddToCart}
+							className='w-full shadow-lg'
+							style={{ opacity: 1 }}
+						/>
+					</Animated.View>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	)
 }
 
+ProductDetailsScreen.options = {
+	headerShown: false,
+	presentation: 'card' as const,
+	animation: 'slide_from_right' as const,
+}
+
+export default ProductDetailsScreen
