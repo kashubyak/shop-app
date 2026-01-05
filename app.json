@@ -15,7 +15,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.shopapp"
+      "bundleIdentifier": "com.anonymous.shopapp",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs access to your camera to take photos of products.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to select product images."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,13 +28,25 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.shopapp"
+      "package": "com.anonymous.shopapp",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app needs access to your photos to upload product images.",
+          "cameraPermission": "This app needs access to your camera to take photos of products."
+        }
+      ]
     ]
   }
 }
