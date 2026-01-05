@@ -13,7 +13,7 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
@@ -21,10 +21,11 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated'
 
-function ProductDetailsScreen() {
+export default function ProductDetailsScreen() {
 	const { id } = useLocalSearchParams<{ id: string }>()
 	const router = useRouter()
 	const productId = parseInt(id || '0', 10)
+	const insets = useSafeAreaInsets()
 
 	const { data: products = [], isLoading } = useProducts('all')
 	const product = products.find((p: IProduct) => p.id === productId)
@@ -77,7 +78,7 @@ function ProductDetailsScreen() {
 	}
 
 	return (
-		<SafeAreaView className='flex-1 bg-background' edges={['top']}>
+		<View className='flex-1 bg-background' style={{ paddingTop: insets.top }}>
 			<ScrollView 
 				className='flex-1 bg-background'
 				showsVerticalScrollIndicator={false}
@@ -158,14 +159,7 @@ function ProductDetailsScreen() {
 					</Animated.View>
 				</View>
 			</ScrollView>
-		</SafeAreaView>
+		</View>
 	)
 }
 
-ProductDetailsScreen.options = {
-	headerShown: false,
-	presentation: 'card' as const,
-	animation: 'slide_from_right' as const,
-}
-
-export default ProductDetailsScreen
