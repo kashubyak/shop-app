@@ -3,15 +3,13 @@ import { Typography } from '@/components/ui/Typography'
 import { CheckoutModal } from '@/components/checkout/CheckoutModal'
 import { SuccessModal } from '@/components/checkout/SuccessModal'
 import { CheckoutFormData } from '@/components/checkout/CheckoutForm'
+import { SwipeableCartItem } from '@/components/cart/SwipeableCartItem'
 import { useCartStore } from '@/store/useCartStore'
 import { Ionicons } from '@expo/vector-icons'
 import { useEffect, useState } from 'react'
 import {
 	ActivityIndicator,
-	FlatList,
-	Image,
 	ScrollView,
-	TouchableOpacity,
 	View,
 } from 'react-native'
 
@@ -87,69 +85,12 @@ export default function CartScreen() {
 				{/* Cart Items List */}
 				<View className='px-4 mt-4'>
 					{items.map(item => (
-						<View
+						<SwipeableCartItem
 							key={item.product.id}
-							className='bg-card rounded-xl p-4 mb-4 border border-border flex-row'
-						>
-							{/* Product Image */}
-							<View className='w-20 h-20 bg-white rounded-lg items-center justify-center mr-4'>
-								<Image
-									source={{ uri: item.product.image }}
-									className='w-full h-full'
-									resizeMode='contain'
-								/>
-							</View>
-
-							{/* Product Info */}
-							<View className='flex-1'>
-								<Typography
-									variant='body'
-									className='font-semibold text-foreground mb-1'
-									numberOfLines={2}
-								>
-									{item.product.title}
-								</Typography>
-								<Typography variant='body' className='text-primary font-bold text-lg mb-3'>
-									${item.product.price.toFixed(2)}
-								</Typography>
-
-								{/* Quantity Controls */}
-								<View className='flex-row items-center justify-between'>
-									<View className='flex-row items-center bg-muted rounded-lg'>
-										<TouchableOpacity
-											onPress={() => updateQuantity(item.product.id, item.quantity - 1)}
-											className='w-10 h-10 items-center justify-center'
-											activeOpacity={0.7}
-										>
-											<Ionicons name='remove' size={20} color='#1f2937' />
-										</TouchableOpacity>
-
-										<View className='w-12 items-center justify-center'>
-											<Typography variant='body' className='font-semibold text-foreground'>
-												{item.quantity}
-											</Typography>
-										</View>
-
-										<TouchableOpacity
-											onPress={() => updateQuantity(item.product.id, item.quantity + 1)}
-											className='w-10 h-10 items-center justify-center'
-											activeOpacity={0.7}
-										>
-											<Ionicons name='add' size={20} color='#1f2937' />
-										</TouchableOpacity>
-									</View>
-
-									{/* Remove Button */}
-									<TouchableOpacity
-										onPress={() => removeItem(item.product.id)}
-										className='p-2'
-										activeOpacity={0.7}
-									>
-										<Ionicons name='trash-outline' size={20} color='#ef4444' />
-									</TouchableOpacity>
-								</View>
-							</View>
-						</View>
+							item={item}
+							onUpdateQuantity={updateQuantity}
+							onRemove={removeItem}
+						/>
 					))}
 				</View>
 

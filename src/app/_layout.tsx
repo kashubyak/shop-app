@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import '../../global.css'
 
 // Hide SafeAreaView warning since we're using react-native-safe-area-context
@@ -27,23 +28,25 @@ export default function RootLayout() {
 	}, [])
 
 	return (
-		<SafeAreaProvider>
-			<QueryClientProvider client={queryClient}>
-				<ThemeProvider value={theme}>
-					<Stack>
-						<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-						<Stack.Screen 
-							name='product/[id]' 
-							options={{ 
-								headerShown: false,
-								presentation: 'card',
-								animation: 'slide_from_right',
-							}} 
-						/>
-					</Stack>
-					<StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-				</ThemeProvider>
-			</QueryClientProvider>
-		</SafeAreaProvider>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<SafeAreaProvider>
+				<QueryClientProvider client={queryClient}>
+					<ThemeProvider value={theme}>
+						<Stack>
+							<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+							<Stack.Screen 
+								name='product/[id]' 
+								options={{ 
+									headerShown: false,
+									presentation: 'card',
+									animation: 'slide_from_right',
+								}} 
+							/>
+						</Stack>
+						<StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+					</ThemeProvider>
+				</QueryClientProvider>
+			</SafeAreaProvider>
+		</GestureHandlerRootView>
 	)
 }
