@@ -40,16 +40,18 @@ export default function CartScreen() {
 		// Simulate API call to submit order
 		await new Promise(resolve => setTimeout(resolve, 1500))
 		
-		// Clear cart after successful order submission
-		await clearCart()
-		
-		setIsSubmitting(false)
+		// Close checkout modal
 		setIsCheckoutModalVisible(false)
+		setIsSubmitting(false)
+		
+		// Show success modal - cart will be cleared when user closes the modal
 		setIsSuccessModalVisible(true)
 	}
 
-	const handleSuccessClose = () => {
+	const handleSuccessClose = async () => {
 		setIsSuccessModalVisible(false)
+		// Clear cart when user closes success modal
+		await clearCart()
 	}
 
 	if (isLoading) {
@@ -62,15 +64,20 @@ export default function CartScreen() {
 
 	if (items.length === 0) {
 		return (
-			<View className='flex-1 justify-center items-center bg-background px-6'>
-				<Ionicons name='cart-outline' size={80} color='#9ca3af' />
-				<Typography variant='h1' className='mt-6 mb-2 text-center'>
-					Your cart is empty
-				</Typography>
-				<Typography variant='body' className='text-muted-foreground text-center'>
-					Add some products to get started
-				</Typography>
-			</View>
+			<>
+				<View className='flex-1 justify-center items-center bg-background px-6'>
+					<Ionicons name='cart-outline' size={80} color='#9ca3af' />
+					<Typography variant='h1' className='mt-6 mb-2 text-center'>
+						Your cart is empty
+					</Typography>
+					<Typography variant='body' className='text-muted-foreground text-center'>
+						Add some products to get started
+					</Typography>
+				</View>
+				
+				{/* Success Modal - render even when cart is empty */}
+				<SuccessModal visible={isSuccessModalVisible} onClose={handleSuccessClose} />
+			</>
 		)
 	}
 
