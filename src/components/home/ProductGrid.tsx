@@ -1,5 +1,6 @@
 import { Typography } from '@/components/ui/Typography'
 import { IProduct } from '@/types/products.interface'
+import { useRouter } from 'expo-router'
 import { ActivityIndicator, FlatList, View } from 'react-native'
 import { ProductCard } from './ProductCard'
 
@@ -10,6 +11,12 @@ interface ProductGridProps {
 }
 
 export const ProductGrid = ({ products, isLoading, error }: ProductGridProps) => {
+	const router = useRouter()
+
+	const handleProductPress = (id: number) => {
+		router.push(`/product/${id}`)
+	}
+
 	if (isLoading) {
 		return (
 			<View className='flex-1 justify-center items-center py-10'>
@@ -34,7 +41,7 @@ export const ProductGrid = ({ products, isLoading, error }: ProductGridProps) =>
 			columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: 10 }}
 			contentContainerStyle={{ paddingBottom: 20 }}
 			renderItem={({ item }) => (
-				<ProductCard product={item} onPress={id => console.log('Open product', id)} />
+				<ProductCard product={item} onPress={handleProductPress} />
 			)}
 			ListEmptyComponent={
 				<View className='mt-10 items-center'>

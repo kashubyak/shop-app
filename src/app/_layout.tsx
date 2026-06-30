@@ -5,9 +5,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
-import { useColorScheme } from 'react-native'
+import { LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import '../../global.css'
+
+// Приховуємо попередження про SafeAreaView, оскільки ми використовуємо react-native-safe-area-context
+LogBox.ignoreLogs(['SafeAreaView has been deprecated'])
 
 const queryClient = new QueryClient()
 
@@ -26,6 +29,14 @@ export default function RootLayout() {
 				<ThemeProvider value={theme}>
 					<Stack>
 						<Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+						<Stack.Screen 
+							name='product/[id]' 
+							options={{ 
+								headerShown: false,
+								presentation: 'card',
+								animation: 'slide_from_right',
+							}} 
+						/>
 					</Stack>
 					<StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 				</ThemeProvider>

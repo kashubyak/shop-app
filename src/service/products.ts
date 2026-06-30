@@ -16,3 +16,8 @@ export const getProductsByCategory = async (category: string) => {
 	const { data } = await axios.get(`${API_URL}/products/category/${category}`)
 	return data
 }
+
+export const getProductById = async (id: number) => {
+	const { data } = await axios.get(`${API_URL}/products/${id}`)
+	return data
+}
