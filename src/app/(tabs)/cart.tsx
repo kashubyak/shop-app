@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/Button'
 import { Typography } from '@/components/ui/Typography'
+import { CheckoutModal } from '@/components/checkout/CheckoutModal'
+import { SuccessModal } from '@/components/checkout/SuccessModal'
+import { CheckoutFormData } from '@/components/checkout/CheckoutForm'
 import { useCartStore } from '@/store/useCartStore'
 import { Ionicons } from '@expo/vector-icons'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	ActivityIndicator,
 	FlatList,
@@ -13,12 +16,43 @@ import {
 } from 'react-native'
 
 export default function CartScreen() {
-	const { items, totalPrice, totalItems, isLoading, loadCart, updateQuantity, removeItem } =
+	const { items, totalPrice, totalItems, isLoading, loadCart, updateQuantity, removeItem, clearCart } =
 		useCartStore()
+	const [isCheckoutModalVisible, setIsCheckoutModalVisible] = useState(false)
+	const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	useEffect(() => {
 		loadCart()
 	}, [])
+
+	const handleCheckout = () => {
+		setIsCheckoutModalVisible(true)
+	}
+
+	/**
+	 * Handles checkout form submission
+	 * Simulates API call, clears cart, and shows success message
+	 */
+	const handleCheckoutSubmit = async (data: CheckoutFormData) => {
+		setIsSubmitting(true)
+		
+		// Simulate API call to submit order
+		await new Promise(resolve => setTimeout(resolve, 1500))
+		
+		// Close checkout modal
+		setIsCheckoutModalVisible(false)
+		setIsSubmitting(false)
+		
+		// Show success modal - cart will be cleared when user closes the modal
+		setIsSuccessModalVisible(true)
+	}
+
+	const handleSuccessClose = async () => {
+		setIsSuccessModalVisible(false)
+		// Clear cart when user closes success modal
+		await clearCart()
+	}
 
 	if (isLoading) {
 		return (
@@ -30,15 +64,20 @@ export default function CartScreen() {
 
 	if (items.length === 0) {
 		return (
-			<View className='flex-1 justify-center items-center bg-background px-6'>
-				<Ionicons name='cart-outline' size={80} color='#9ca3af' />
-				<Typography variant='h1' className='mt-6 mb-2 text-center'>
-					Your cart is empty
-				</Typography>
-				<Typography variant='body' className='text-muted-foreground text-center'>
-					Add some products to get started
-				</Typography>
-			</View>
+			<>
+				<View className='flex-1 justify-center items-center bg-background px-6'>
+					<Ionicons name='cart-outline' size={80} color='#9ca3af' />
+					<Typography variant='h1' className='mt-6 mb-2 text-center'>
+						Your cart is empty
+					</Typography>
+					<Typography variant='body' className='text-muted-foreground text-center'>
+						Add some products to get started
+					</Typography>
+				</View>
+				
+				{/* Success Modal - render even when cart is empty */}
+				<SuccessModal visible={isSuccessModalVisible} onClose={handleSuccessClose} />
+			</>
 		)
 	}
 
@@ -115,7 +154,7 @@ export default function CartScreen() {
 				</View>
 
 				{/* Total Price Section */}
-				<View className='px-4 mt-4 mb-6'>
+				<View className='px-4 mt-4 mb-4'>
 					<View className='bg-card rounded-xl p-4 border border-border'>
 						<View className='flex-row justify-between items-center mb-2'>
 							<Typography variant='body' className='text-muted-foreground'>
@@ -136,7 +175,28 @@ export default function CartScreen() {
 						</View>
 					</View>
 				</View>
+
+				{/* Checkout Button */}
+				<View className='px-4 mb-6'>
+					<Button
+						title='Checkout'
+						variant='primary'
+						onPress={handleCheckout}
+						className='w-full'
+					/>
+				</View>
 			</ScrollView>
+
+			{/* Checkout Modal */}
+			<CheckoutModal
+				visible={isCheckoutModalVisible}
+				onClose={() => setIsCheckoutModalVisible(false)}
+				onSubmit={handleCheckoutSubmit}
+				isLoading={isSubmitting}
+			/>
+
+			{/* Success Modal */}
+			<SuccessModal visible={isSuccessModalVisible} onClose={handleSuccessClose} />
 		</View>
 	)
 }

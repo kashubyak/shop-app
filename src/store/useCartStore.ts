@@ -19,8 +19,14 @@ interface CartState {
 	loadCart: () => Promise<void>
 }
 
+// Storage key for persisting cart data
 const CART_STORAGE_KEY = 'cart_items'
 
+/**
+ * Calculates total price and total items count from cart items
+ * @param items - Array of cart items
+ * @returns Object with totalPrice and totalItems
+ */
 const calculateTotals = (items: CartItem[]) => {
 	const totalPrice = items.reduce(
 		(sum, item) => sum + item.product.price * item.quantity,
@@ -83,6 +89,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 	},
 
 	updateQuantity: async (productId: number, quantity: number) => {
+		// If quantity is 0 or less, remove item from cart
 		if (quantity <= 0) {
 			await get().removeItem(productId)
 			return
