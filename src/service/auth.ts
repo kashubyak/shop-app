@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IUserData } from '../types/user'
+import { IUserData } from '../types/user.interface'
 
 const API_URL = 'https://fakestoreapi.com'
 

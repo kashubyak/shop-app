@@ -1,9 +1,10 @@
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native'
-import { loginUser, registerUser } from '../api/auth'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { Typography } from '../components/ui/Typography'
+import { loginUser, registerUser } from '../service/auth'
 import { useAuthStore } from '../store/useAuthStore'
 import { RootTabScreenProps } from '../types/navigation'
 
@@ -58,8 +59,10 @@ export const ProfileScreen = ({ route }: Props) => {
 				Alert.alert('Success', 'Account created! Please log in.')
 				setIsLoginMode(true)
 			}
-		} catch (error: any) {
-			Alert.alert('Error', error.response?.data || 'Something went wrong')
+		} catch (error: unknown) {
+			if (error instanceof AxiosError)
+				Alert.alert('Error', error.response?.data || 'Something went wrong')
+			else Alert.alert('Error', 'Something went wrong')
 		} finally {
 			setLoading(false)
 		}
