@@ -31,7 +31,7 @@ export const useAuthStore = create<AuthState>(set => ({
 			const token = await AsyncStorage.getItem('user_token')
 			if (token) set({ token })
 		} catch (e) {
-			console.error('Failed to load token')
+			// Failed to load token
 		} finally {
 			set({ isLoading: false })
 		}

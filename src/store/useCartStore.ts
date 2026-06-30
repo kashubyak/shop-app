@@ -66,7 +66,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			await AsyncStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newItems))
 		} catch (error) {
-			console.error('Failed to save cart to storage:', error)
+			// Failed to save cart
 		}
 
 		set({ items: newItems, totalPrice, totalItems })
@@ -82,7 +82,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			await AsyncStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newItems))
 		} catch (error) {
-			console.error('Failed to save cart to storage:', error)
+			// Failed to save cart
 		}
 
 		set({ items: newItems, totalPrice, totalItems })
@@ -106,7 +106,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			await AsyncStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newItems))
 		} catch (error) {
-			console.error('Failed to save cart to storage:', error)
+			// Failed to save cart
 		}
 
 		set({ items: newItems, totalPrice, totalItems })
@@ -116,7 +116,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 		try {
 			await AsyncStorage.removeItem(CART_STORAGE_KEY)
 		} catch (error) {
-			console.error('Failed to clear cart from storage:', error)
+			// Failed to clear cart
 		}
 
 		set({ items: [], totalPrice: 0, totalItems: 0 })
@@ -133,7 +133,6 @@ export const useCartStore = create<CartState>((set, get) => ({
 				set({ isLoading: false })
 			}
 		} catch (error) {
-			console.error('Failed to load cart from storage:', error)
 			set({ isLoading: false })
 		}
 	},

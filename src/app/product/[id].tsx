@@ -3,16 +3,18 @@ import { Rating } from '@/components/ui/Rating'
 import { Typography } from '@/components/ui/Typography'
 import { useProducts } from '@/hooks/useProducts'
 import { useCartStore } from '@/store/useCartStore'
+import { useMyProductsStore } from '@/store/useMyProductsStore'
 import { IProduct } from '@/types/products.interface'
 import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
 	ActivityIndicator,
 	Image,
 	ScrollView,
 	TouchableOpacity,
 	View,
+	Alert,
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Animated, {
@@ -21,6 +23,7 @@ import Animated, {
 	withSpring,
 	withTiming,
 } from 'react-native-reanimated'
+import { shareProduct } from '@/utils/shareProduct'
 
 export default function ProductDetailsScreen() {
 	const { id } = useLocalSearchParams<{ id: string }>()
@@ -29,8 +32,17 @@ export default function ProductDetailsScreen() {
 	const insets = useSafeAreaInsets()
 
 	const { data: products = [], isLoading } = useProducts('all')
-	const product = products.find((p: IProduct) => p.id === productId)
+	const { products: myProducts, loadProducts } = useMyProductsStore()
 	const addItem = useCartStore(state => state.addItem)
+
+	useEffect(() => {
+		loadProducts()
+	}, [])
+
+	// Check both API products and local products
+	const product = productId < 0 
+		? myProducts.find((p: IProduct) => p.id === productId)
+		: products.find((p: IProduct) => p.id === productId)
 
 	const [isAddingToCart, setIsAddingToCart] = useState(false)
 	const scale = useSharedValue(1)
@@ -60,6 +72,16 @@ export default function ProductDetailsScreen() {
 		setIsAddingToCart(false)
 	}
 
+	const handleShare = async () => {
+		if (!product) return
+
+		try {
+			await shareProduct(product.id, product.title)
+		} catch (error) {
+			Alert.alert('Error', 'Failed to share product')
+		}
+	}
+
 	if (isLoading) {
 		return (
 			<View className='flex-1 justify-center items-center bg-background'>
@@ -85,7 +107,7 @@ export default function ProductDetailsScreen() {
 				className='flex-1 bg-background'
 				showsVerticalScrollIndicator={false}
 			>
-				{/* Header with back button */}
+				{/* Header with back button and share */}
 				<View className='flex-row items-center justify-between px-4 pt-2 pb-4'>
 					<TouchableOpacity
 						onPress={() => router.back()}
@@ -94,11 +116,18 @@ export default function ProductDetailsScreen() {
 					>
 						<Ionicons name='arrow-back' size={22} color='#1f2937' />
 					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={handleShare}
+						className='w-12 h-12 rounded-full items-center justify-center bg-white shadow-md border border-gray-100'
+						activeOpacity={0.8}
+					>
+						<Ionicons name='share-outline' size={22} color='#1f2937' />
+					</TouchableOpacity>
 				</View>
 
 				{/* Large product image with shadow */}
-				<View className='w-full h-96 bg-white items-center justify-center mb-6 px-4'>
-					<View className='w-full h-full rounded-2xl bg-white shadow-lg overflow-hidden'>
+				<View className='w-full h-96 bg-gray-100 items-center justify-center mb-6'>
+					<View className='w-full h-full bg-gray-100 shadow-lg overflow-hidden'>
 						<Image
 							source={{ uri: product.image }}
 							className='w-full h-full'
